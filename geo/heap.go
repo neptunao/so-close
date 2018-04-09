@@ -20,8 +20,8 @@ type FixedSizeHeap struct {
 	mode        PriorityQueueMode
 }
 
-// MakeFixedSizeGeoDistMinHeap is a constructor for FixedSizeHeap
-func MakeFixedSizeGeoDistMinHeap(mode PriorityQueueMode, limit int,
+// MakeFixedSizeHeap is a constructor for FixedSizeHeap
+func MakeFixedSizeHeap(mode PriorityQueueMode, limit int,
 	refCoord Coord) *FixedSizeHeap {
 
 	return &FixedSizeHeap{

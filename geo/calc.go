@@ -26,8 +26,8 @@ func geoHeapTop(h *FixedSizeHeap, count int, center Coord) []RelativeCoord {
 // relative to center
 func CalcTopPoints(center Coord, resultCount int, itr data.Iterator) (min []RelativeCoord, max []RelativeCoord, err error) {
 
-	minHeap := MakeFixedSizeGeoDistMinHeap(MinPriorityQueue, resultCount, center)
-	maxHeap := MakeFixedSizeGeoDistMinHeap(MaxPriorityQueue, resultCount, center)
+	minHeap := MakeFixedSizeHeap(MinPriorityQueue, resultCount, center)
+	maxHeap := MakeFixedSizeHeap(MaxPriorityQueue, resultCount, center)
 	heap.Init(minHeap)
 	heap.Init(maxHeap)
 	i := 0
