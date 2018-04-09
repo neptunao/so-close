@@ -38,7 +38,7 @@ func main() {
 		Lat:  *centerLat,
 		Lon:  *centerLon,
 	}
-	fmt.Printf("Calculating top %d nearest and furtherst points relative to %s\n",
+	fmt.Printf("Calculating top %d nearest and furthest points relative to %s\n",
 		limit, center)
 	min, max, err := geo.CalcTopPoints(center, limit, itr)
 	if err != nil {
@@ -46,6 +46,7 @@ func main() {
 	}
 	fmt.Printf("Top %d nearest:\n", limit)
 	fmt.Println(strings.Join(stringifyGeoCoordArray(min), "\n"))
-	fmt.Printf("Top %d furtherst:\n", limit)
+	fmt.Println()
+	fmt.Printf("Top %d furthest:\n", limit)
 	fmt.Println(strings.Join(stringifyGeoCoordArray(max), "\n"))
 }

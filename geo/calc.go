@@ -22,7 +22,7 @@ func geoHeapTop(h *FixedSizeHeap, count int, center Coord) []RelativeCoord {
 	return res
 }
 
-// CalcTopPoints is a function to get TOP-(limit) nearest and furtherst GeoPoints
+// CalcTopPoints is a function to get TOP-(limit) nearest and furthest GeoPoints
 // relative to center
 func CalcTopPoints(center Coord, resultCount int, itr data.Iterator) (min []RelativeCoord, max []RelativeCoord, err error) {
 
