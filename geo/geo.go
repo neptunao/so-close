@@ -1,12 +1,12 @@
-package main
+package geo
 
 import (
 	"fmt"
 	"math"
 )
 
-//GeoCoord is geo coordinates representation with latitude and longitude
-type GeoCoord struct {
+//Coord is geo coordinates representation with latitude and longitude
+type Coord struct {
 	Name string
 	Lat  float64
 	Lon  float64
@@ -20,7 +20,7 @@ func rad2deg(rad float64) float64 {
 	return (rad / math.Pi * 180.0)
 }
 
-func distance(coord1, coord2 GeoCoord) float64 {
+func distance(coord1, coord2 Coord) float64 {
 	theta := coord1.Lon - coord2.Lon
 	dist := math.Sin(deg2rad(coord1.Lat))*math.Sin(deg2rad(coord2.Lat)) +
 		math.Cos(deg2rad(coord1.Lat))*math.Cos(deg2rad(coord2.Lat))*math.Cos(deg2rad(theta))
@@ -29,6 +29,6 @@ func distance(coord1, coord2 GeoCoord) float64 {
 	return dist
 }
 
-func (c GeoCoord) String() string {
+func (c Coord) String() string {
 	return fmt.Sprintf("%s (%f, %f)", c.Name, c.Lat, c.Lon)
 }
