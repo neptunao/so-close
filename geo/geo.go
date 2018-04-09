@@ -12,6 +12,13 @@ type Coord struct {
 	Lon  float64
 }
 
+// RelativeCoord is Coord with Center point and Distance in KM from it
+type RelativeCoord struct {
+	Coord
+	Center   Coord
+	Distance float64
+}
+
 func deg2rad(deg float64) float64 {
 	return (deg * math.Pi / 180.0)
 }
@@ -20,6 +27,7 @@ func rad2deg(rad float64) float64 {
 	return (rad / math.Pi * 180.0)
 }
 
+// algorithm from http://www.geodatasource.com/developers/c-sharp
 func distance(coord1, coord2 Coord) float64 {
 	theta := coord1.Lon - coord2.Lon
 	dist := math.Sin(deg2rad(coord1.Lat))*math.Sin(deg2rad(coord2.Lat)) +
@@ -36,4 +44,13 @@ func IsValidCoord(c Coord) bool {
 
 func (c Coord) String() string {
 	return fmt.Sprintf("%s (%f, %f)", c.Name, c.Lat, c.Lon)
+}
+
+func (c RelativeCoord) String() string {
+	return fmt.Sprintf("%s (%f, %f) distance from %s: %f km",
+		c.Name,
+		c.Lat,
+		c.Lon,
+		c.Center,
+		c.Distance)
 }

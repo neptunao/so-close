@@ -16,7 +16,7 @@ var (
 	filename  = kingpin.Arg("filename", "CSV file with geo data").Required().String()
 )
 
-func stringifyGeoCoordArray(coords []geo.Coord) []string {
+func stringifyGeoCoordArray(coords []geo.RelativeCoord) []string {
 	res := make([]string, len(coords))
 	for i := 0; i < len(coords); i++ {
 		res[i] = coords[i].String()

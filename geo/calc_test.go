@@ -34,27 +34,6 @@ func (itr *TextIterator) Close() error {
 	return nil
 }
 
-func Test_geoHeapTop(t *testing.T) {
-	type args struct {
-		h     *FixedSizeHeap
-		count int
-	}
-	tests := []struct {
-		name string
-		args args
-		want []Coord
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := geoHeapTop(tt.args.h, tt.args.count); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("geoHeapTop() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func TestCalcTopPoints(t *testing.T) {
 	type args struct {
 		center      Coord
@@ -64,8 +43,8 @@ func TestCalcTopPoints(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		wantMin []Coord
-		wantMax []Coord
+		wantMin []RelativeCoord
+		wantMax []RelativeCoord
 		wantErr bool
 	}{
 		{
@@ -87,8 +66,16 @@ func TestCalcTopPoints(t *testing.T) {
 					},
 				},
 			},
-			wantMin: []Coord{Coord{"", 51, 51}},
-			wantMax: []Coord{Coord{"", 51, 51}},
+			wantMin: []RelativeCoord{RelativeCoord{
+				Coord:    Coord{"", 51, 51},
+				Center:   Coord{"", 50, 50},
+				Distance: 131.77413412348744,
+			}},
+			wantMax: []RelativeCoord{RelativeCoord{
+				Coord:    Coord{"", 51, 51},
+				Center:   Coord{"", 50, 50},
+				Distance: 131.77413412348744,
+			}},
 			wantErr: false,
 		},
 		{
@@ -103,8 +90,20 @@ func TestCalcTopPoints(t *testing.T) {
 					},
 				},
 			},
-			wantMin: []Coord{Coord{"", 49.999, 49.999}},
-			wantMax: []Coord{Coord{"", 51, 51}},
+			wantMin: []RelativeCoord{
+				RelativeCoord{
+					Coord:    Coord{"", 49.999, 49.999},
+					Center:   Coord{"", 50, 50},
+					Distance: 0.13217930751857487,
+				},
+			},
+			wantMax: []RelativeCoord{
+				RelativeCoord{
+					Coord:    Coord{"", 51, 51},
+					Center:   Coord{"", 50, 50},
+					Distance: 131.77413412348744,
+				},
+			},
 			wantErr: false,
 		},
 		{
@@ -129,15 +128,37 @@ func TestCalcTopPoints(t *testing.T) {
 					},
 				},
 			},
-			wantMin: []Coord{
-				Coord{"381769", 52.2934316, 4.9934547},
-				Coord{"1049729", 52.37165040000000005, 4.90306019999999965},
-				Coord{"505868", 52.09791479999999808, 5.11686619999999959},
+			wantMin: []RelativeCoord{
+				RelativeCoord{
+					Coord:    Coord{"381769", 52.2934316, 4.9934547},
+					Center:   Coord{"center", 52.32161250000001, 4.953189800000001},
+					Distance: 4.160708764943971,
+				},
+				RelativeCoord{
+					Coord:    Coord{"1049729", 52.37165040000000005, 4.90306019999999965},
+					Center:   Coord{"center", 52.32161250000001, 4.953189800000001},
+					Distance: 6.522932940093564,
+				}, RelativeCoord{
+					Coord:    Coord{"505868", 52.09791479999999808, 5.11686619999999959},
+					Center:   Coord{"center", 52.32161250000001, 4.953189800000001},
+					Distance: 27.258447151877526,
+				},
 			},
-			wantMax: []Coord{
-				Coord{"419117", 48.8653063, 2.3794788},
-				Coord{"636618", 50.853433, 5.6841425},
-				Coord{"23928", 50.8651879, 5.707368199999999},
+			wantMax: []RelativeCoord{
+				RelativeCoord{
+					Coord:    Coord{"419117", 48.8653063, 2.3794788},
+					Center:   Coord{"center", 52.32161250000001, 4.953189800000001},
+					Distance: 425.01202241393037,
+				},
+				RelativeCoord{
+					Coord:    Coord{"636618", 50.853433, 5.6841425},
+					Center:   Coord{"center", 52.32161250000001, 4.953189800000001},
+					Distance: 170.87564097083674,
+				}, RelativeCoord{
+					Coord:    Coord{"23928", 50.8651879, 5.707368199999999},
+					Center:   Coord{"center", 52.32161250000001, 4.953189800000001},
+					Distance: 170.1097860273889,
+				},
 			},
 			wantErr: false,
 		},

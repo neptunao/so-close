@@ -9,18 +9,23 @@ import (
 	"github.com/neptunao/so-close/data"
 )
 
-func geoHeapTop(h *FixedSizeHeap, count int) []Coord {
-	res := make([]Coord, count)
+func geoHeapTop(h *FixedSizeHeap, count int, center Coord) []RelativeCoord {
+	res := make([]RelativeCoord, count)
 	for i := 0; i < h.Limit; i++ {
 		elem := heap.Pop(h).(Coord)
-		res[i] = elem
+		res[i] = RelativeCoord{
+			Coord:    elem,
+			Center:   center,
+			Distance: distance(center, elem),
+		}
 	}
 	return res
 }
 
 // CalcTopPoints is a function to get TOP-(limit) nearest and furtherst GeoPoints
 // relative to center
-func CalcTopPoints(center Coord, resultCount int, itr data.Iterator) (min []Coord, max []Coord, err error) {
+func CalcTopPoints(center Coord, resultCount int, itr data.Iterator) (min []RelativeCoord, max []RelativeCoord, err error) {
+
 	minHeap := MakeFixedSizeGeoDistMinHeap(MinPriorityQueue, resultCount, center)
 	maxHeap := MakeFixedSizeGeoDistMinHeap(MaxPriorityQueue, resultCount, center)
 	heap.Init(minHeap)
@@ -58,7 +63,7 @@ func CalcTopPoints(center Coord, resultCount int, itr data.Iterator) (min []Coor
 			resultCount, i)
 	}
 
-	min = geoHeapTop(minHeap, resultCount)
-	max = geoHeapTop(maxHeap, resultCount)
+	min = geoHeapTop(minHeap, resultCount, center)
+	max = geoHeapTop(maxHeap, resultCount, center)
 	return
 }
