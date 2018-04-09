@@ -1,5 +1,15 @@
 package main
 
+// PriorityQueueMode is a type to specify PriorityQueue order: minimum or maximum
+type PriorityQueueMode int
+
+const (
+	// MinPriorityQueue maps to Minimal Priority Queue (pops element with minimal priority first)
+	MinPriorityQueue PriorityQueueMode = iota
+	// MaxPriorityQueue maps to Maximum Priority Queue (pops element with maximal priority first)
+	MaxPriorityQueue
+)
+
 // FixedSizeGeoDistMinHeap is a min binary heap implementation with distance
 // from CenterCoord as priority. Size is fixed, new element always goes to the
 // end and heapifies after insertion
@@ -7,14 +17,18 @@ type FixedSizeGeoDistMinHeap struct {
 	data        []GeoCoord
 	CenterCoord GeoCoord
 	Limit       int
+	mode        PriorityQueueMode
 }
 
 // MakeFixedSizeGeoDistMinHeap is a constructor for FixedSizeGeoDistMinHeap
-func MakeFixedSizeGeoDistMinHeap(limit int, refCoord GeoCoord) *FixedSizeGeoDistMinHeap {
+func MakeFixedSizeGeoDistMinHeap(mode PriorityQueueMode, limit int,
+	refCoord GeoCoord) *FixedSizeGeoDistMinHeap {
+
 	return &FixedSizeGeoDistMinHeap{
 		data:        make([]GeoCoord, 0, limit+1),
 		CenterCoord: refCoord,
 		Limit:       limit,
+		mode:        mode,
 	}
 }
 
@@ -27,7 +41,14 @@ func (h *FixedSizeGeoDistMinHeap) Len() int {
 }
 
 func (h *FixedSizeGeoDistMinHeap) Less(i, j int) bool {
-	return h.refDist(h.data[i]) < h.refDist(h.data[j])
+	switch h.mode {
+	case MinPriorityQueue:
+		return h.refDist(h.data[i]) < h.refDist(h.data[j])
+	case MaxPriorityQueue:
+		return h.refDist(h.data[i]) > h.refDist(h.data[j])
+	default:
+		return h.refDist(h.data[i]) < h.refDist(h.data[j])
+	}
 }
 
 func (h *FixedSizeGeoDistMinHeap) Swap(i, j int) {

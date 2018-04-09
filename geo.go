@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math"
 )
 
@@ -26,4 +27,8 @@ func distance(coord1, coord2 GeoCoord) float64 {
 	dist = rad2deg(math.Acos(dist))
 	dist = dist * 60 * 1.1515 * 1.609344 //last num converts to KM
 	return dist
+}
+
+func (c GeoCoord) String() string {
+	return fmt.Sprintf("%s (%f, %f)", c.Name, c.Lat, c.Lon)
 }
