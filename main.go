@@ -25,7 +25,6 @@ func stringifyGeoCoordArray(coords []geo.RelativeCoord) []string {
 	return res
 }
 
-// TODO read console arguments
 func main() {
 	kingpin.Parse()
 	itr, err := data.ConnectCSVFile(*filename)
