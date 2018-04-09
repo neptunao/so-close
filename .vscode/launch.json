@@ -14,7 +14,9 @@
             "host": "127.0.0.1",
             "program": "${fileDirname}",
             "env": {},
-            "args": [],
+            "args": [
+                "/home/neptunao/go/src/github.com/neptunao/so-close/geodata.csv"
+            ],
             "showLog": true
         }
     ]

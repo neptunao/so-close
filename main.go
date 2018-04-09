@@ -7,6 +7,13 @@ import (
 
 	"github.com/neptunao/so-close/data"
 	"github.com/neptunao/so-close/geo"
+	kingpin "gopkg.in/alecthomas/kingpin.v2"
+)
+
+var (
+	centerLat = kingpin.Flag("center-lat", "Center geo point latitude").Default("51.925146").Float64()
+	centerLon = kingpin.Flag("center-lon", "Center geo point longitude").Default("4.478617").Float64()
+	filename  = kingpin.Arg("filename", "CSV file with geo data").Required().String()
 )
 
 func stringifyGeoCoordArray(coords []geo.Coord) []string {
@@ -19,17 +26,17 @@ func stringifyGeoCoordArray(coords []geo.Coord) []string {
 
 // TODO read console arguments
 func main() {
-	const filename = "/home/neptunao/go/src/github.com/neptunao/so-close/geodata.csv"
-	itr, err := data.ConnectCSVFile(filename)
+	kingpin.Parse()
+	itr, err := data.ConnectCSVFile(*filename)
 	if err != nil {
-		log.Fatalf("error connecting to CSV file %s: %s", filename, err)
+		log.Fatalf("error connecting to CSV file %s: %s", *filename, err)
 	}
 	defer itr.Close()
 	const limit int = 5
 	center := geo.Coord{
 		Name: "HousingAnywhere Rotterdam office",
-		Lat:  51.925146,
-		Lon:  4.478617,
+		Lat:  *centerLat,
+		Lon:  *centerLon,
 	}
 	fmt.Printf("Calculating top %d nearest and furtherst points relative to %s\n",
 		limit, center)
