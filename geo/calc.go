@@ -2,6 +2,8 @@ package geo
 
 import (
 	"container/heap"
+	"fmt"
+	"log"
 	"strconv"
 
 	"github.com/neptunao/so-close/data"
@@ -23,29 +25,37 @@ func CalcTopPoints(center Coord, resultCount int, itr data.Iterator) (min []Coor
 	maxHeap := MakeFixedSizeGeoDistMinHeap(MaxPriorityQueue, resultCount, center)
 	heap.Init(minHeap)
 	heap.Init(maxHeap)
-
-	itr.Next() // Skip header with field names
+	i := 0
 	for {
 		data, ok := itr.Next()
 		if !ok {
 			break
 		}
 		record := data.([]string)
-		latStr, convErr := strconv.ParseFloat(record[1], 64)
+		lat, convErr := strconv.ParseFloat(record[1], 64)
 		if convErr != nil {
 			return nil, nil, convErr
 		}
-		lngStr, convErr := strconv.ParseFloat(record[2], 64)
+		lng, convErr := strconv.ParseFloat(record[2], 64)
 		if convErr != nil {
 			return nil, nil, convErr
 		}
 		coord := Coord{
 			Name: record[0],
-			Lat:  latStr,
-			Lon:  lngStr,
+			Lat:  lat,
+			Lon:  lng,
+		}
+		if !IsValidCoord(coord) {
+			log.Printf("coordinate %d with value %s is invalid", i, coord)
+			continue
 		}
 		heap.Push(minHeap, coord)
 		heap.Push(maxHeap, coord)
+		i++
+	}
+	if i < resultCount {
+		return nil, nil, fmt.Errorf("wanted top %d but have only %d records",
+			resultCount, i)
 	}
 
 	min = geoHeapTop(minHeap, resultCount)

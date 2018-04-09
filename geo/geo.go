@@ -29,6 +29,11 @@ func distance(coord1, coord2 Coord) float64 {
 	return dist
 }
 
+// IsValidCoord checks if geo coordinates in deegrees is valid
+func IsValidCoord(c Coord) bool {
+	return c.Lat >= -90 && c.Lat <= 90 && c.Lon >= -180 && c.Lon <= 180
+}
+
 func (c Coord) String() string {
 	return fmt.Sprintf("%s (%f, %f)", c.Name, c.Lat, c.Lon)
 }

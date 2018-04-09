@@ -43,10 +43,14 @@ func (dc csvDataConnector) Connect() (Iterator, error) {
 	if err != nil {
 		return nil, err
 	}
-	return csvDataIterator{
+
+	itr := csvDataIterator{
 		file:   f,
 		reader: csv.NewReader(f),
-	}, nil
+	}
+	itr.Next() // Skip header with field names
+
+	return itr, nil
 }
 
 // ConnectCSVFile opens CSV file and return Iterator for it

@@ -17,6 +17,7 @@ func stringifyGeoCoordArray(coords []geo.Coord) []string {
 	return res
 }
 
+// TODO read console arguments
 func main() {
 	const filename = "/home/neptunao/go/src/github.com/neptunao/so-close/geodata.csv"
 	itr, err := data.ConnectCSVFile(filename)
